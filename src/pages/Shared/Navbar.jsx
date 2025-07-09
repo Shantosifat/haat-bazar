@@ -1,34 +1,26 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import Logo from "./Logo";
 
 const Navbar = ({ user, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = (
     <>
-      <NavLink
-        to="/allProducts"
-        className="block px-3 py-2 rounded text-black hover:bg-blue-100"
-        activeClassName="text-blue-600 font-semibold"
-      >
-        All Products
-      </NavLink>
+      <NavLink className='text-gray-800' to="/allProducts">All Products</NavLink>
     </>
   );
 
   return (
     <nav className="bg-amber-200 shadow-md px-6 py-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         {/* Left: Logo + Website Name */}
-        <div className="flex items-center space-x-2 w-1/3">
-          <span className="text-2xl">🥦</span>
-          <span className="text-xl font-bold text-green-600">কাঁচাবাজার</span>
+        <div className="mr-60">
+          <Logo></Logo>
         </div>
 
         {/* Center: All Products */}
-        <div className="w-1/3 text-center hidden md:block">
-          {links}
-        </div>
+        <div className="w-1/3 text-center hidden md:block">{links}</div>
 
         {/* Right: Hamburger + Auth/User */}
         <div className="w-1/3 flex justify-end items-center space-x-4">
@@ -66,18 +58,18 @@ const Navbar = ({ user, onLogout }) => {
           <div className="hidden md:flex items-center space-x-4">
             {!user ? (
               <>
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className="px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50"
                 >
                   🔐 Login
-                </a>
-                <a
-                  href="/signup"
+                </Link>
+                <Link
+                  to="/signup"
                   className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
                   🧾 Sign-up
-                </a>
+                </Link>
               </>
             ) : (
               <>
@@ -104,9 +96,9 @@ const Navbar = ({ user, onLogout }) => {
         <div className="md:hidden mt-4 flex flex-col space-y-3">
           <NavLink
             to="/allProducts"
-            className="block px-3 py-2 rounded hover:bg-blue-100 text-gray-700 font-semibold"
+            className="block ml-10 px-3 py-2 rounded text-gray-700 font-semibold"
           >
-            🛍️ All Products
+            All Products
           </NavLink>
 
           {!user ? (
