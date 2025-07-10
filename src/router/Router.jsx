@@ -5,6 +5,8 @@ import AllProducts from "../pages/Home/AllProducts/AllProducts";
 import Login from "../pages/Authentication/Login";
 import SignUp from "../pages/Authentication/SignUp";
 import AuthLayout from "../Layouts/AuthLayout";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import PrivateRoute from "../Routes/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -22,10 +24,23 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    // children:[
+    //   {
+    //     path
+    //   }
+    // ]
+  },
+  {
     path: "/",
     Component: AuthLayout,
     children: [
-        {
+      {
         path: "login",
         Component: Login,
       },
@@ -33,6 +48,6 @@ export const router = createBrowserRouter([
         path: "signup",
         Component: SignUp,
       },
-    ]
+    ],
   },
 ]);

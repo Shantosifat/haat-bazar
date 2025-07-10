@@ -21,9 +21,23 @@ const Navbar = () => {
 
   const links = (
     <>
-      <NavLink className="text-gray-800" to="/allProducts">
-        All Products
-      </NavLink>
+      <li>
+        <NavLink className="text-gray-800 " to="/">
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="text-gray-800" to="/allProducts">
+          All Products
+        </NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink  className="text-gray-800" to="/dashboard">Dashboard</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
 
@@ -36,7 +50,9 @@ const Navbar = () => {
         </div>
 
         {/* Center: All Products */}
-        <div className="w-1/3 text-center hidden md:block">{links}</div>
+        <div className="w-1/3 text-center hidden md:block">
+          <ul className="menu menu-horizontal px-1">{links}</ul>
+        </div>
 
         {/* Right: Hamburger + Auth/User */}
         <div className="w-1/3 flex justify-end items-center space-x-4">
