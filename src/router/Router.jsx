@@ -7,6 +7,7 @@ import SignUp from "../pages/Authentication/SignUp";
 import AuthLayout from "../Layouts/AuthLayout";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import PrivateRoute from "../Routes/PrivateRoute";
+import AddProduct from "../Dashboard/AddProduct/AddProduct";
 
 export const router = createBrowserRouter([
   {
@@ -30,11 +31,12 @@ export const router = createBrowserRouter([
         <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
-    // children:[
-    //   {
-    //     path
-    //   }
-    // ]
+    children: [
+      {
+        path: "addProduct",
+        Component: AddProduct,
+      },
+    ],
   },
   {
     path: "/",

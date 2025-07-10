@@ -1,8 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
-import {
-  FiHome
-} from "react-icons/fi";
+import { FiBarChart2, FiHome, FiShoppingCart, FiTool } from "react-icons/fi";
 import Logo from "../pages/Shared/Logo";
 
 const DashboardLayout = () => {
@@ -54,6 +52,26 @@ const DashboardLayout = () => {
           <div className="space-y-4">
             <NavLink to="/dashBoard" className="flex items-center gap-2">
               <FiHome /> Home
+            </NavLink>
+            <NavLink to="/dashboard/addProduct" className="flex items-center gap-2">
+              <FiShoppingCart /> Add Product
+            </NavLink>
+            <NavLink to="/dashboard/orders" className="flex items-center gap-2">
+              <FiShoppingCart /> My Order List
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/watchlist"
+              className="flex items-center gap-2"
+            >
+              <FiTool /> Manage Watchlist
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/price-trends"
+              className="flex items-center gap-2"
+            >
+              <FiBarChart2 /> View Price Trends
             </NavLink>
           </div>
         </ul>
