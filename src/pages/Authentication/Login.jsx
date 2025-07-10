@@ -1,10 +1,17 @@
 import loginAnimation from "../../assets/login/Animation - 1749911072868.json";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Lottie from "lottie-react";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import UseAuth from "../../hooks/UseAuth";
+import SocialLogin from "./SocialLogin";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = UseAuth();
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const {
     register,
     handleSubmit,
@@ -12,7 +19,22 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
+    login(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back!`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        navigate(from);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="min-h-screen flex items-center rounded-xl justify-center bg-gradient-to-tr from-indigo-100 via-sky-50 to-rose-50 p-4">
@@ -74,12 +96,7 @@ const Login = () => {
             >
               Log In
             </button>
-            <button
-              //   onClick={handleGoogleSignIn}
-              className="btn btn-secondary btn-outline rounded-xl w-full my-1"
-            >
-              <FaGoogle size={18}></FaGoogle> SignIn with Google
-            </button>
+            <SocialLogin></SocialLogin>
           </form>
 
           <p className="text-sm text-center mt-6 text-gray-500">

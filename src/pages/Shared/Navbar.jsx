@@ -1,13 +1,29 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "./Logo";
+import UseAuth from "../../hooks/UseAuth";
+import Swal from "sweetalert2";
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logOut } = UseAuth();
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        Swal.fire("Log Out Successful!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
 
   const links = (
     <>
-      <NavLink className='text-gray-800' to="/allProducts">All Products</NavLink>
+      <NavLink className="text-gray-800" to="/allProducts">
+        All Products
+      </NavLink>
     </>
   );
 
@@ -80,7 +96,7 @@ const Navbar = ({ user, onLogout }) => {
                   title={user.name}
                 />
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogOut}
                   className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50"
                 >
                   🚪 Logout

@@ -2,9 +2,17 @@ import signupAnimation from "../../assets/register/Animation - 1749909840681.jso
 import Lottie from "lottie-react";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import UseAuth from "../../hooks/UseAuth";
+import { useState } from "react";
+import SocialLogin from "./SocialLogin";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { createUser, updateUserProfile } = UseAuth();
+  const [profilePic, setProfilePic] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -12,7 +20,45 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
+    // console.log(createUser);
+    createUser(data.email, data.password)
+      .then(async (result) => {
+        console.log(result.user);
+        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "Sign Up Successful!",
+          text: "Welcome to Kachabazaar!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        // update user profile in db
+
+        // const userInfo = {
+        //   email: data.email,
+        //   role: "user", // deafult role
+        //   created_at: new Date().toISOString(),
+        //   last_log_in: new Date().toISOString(),
+        // };
+        // const userRes = await axiosInstance.post("/users", userInfo);
+        // console.log('updated user info', userRes.data);
+        // update userprofile in firebase
+        const userProfile = {
+          displayName: data.name,
+          photoURL: profilePic,
+        };
+        updateUserProfile(userProfile)
+          .then(() => {
+            console.log("profile pic & name updated ");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="min-h-screen flex items-center rounded-xl justify-center bg-gradient-to-tr from-rose-200 via-sky-100 to-indigo-200 p-4">
@@ -89,12 +135,7 @@ const SignUp = () => {
             >
               Create Account
             </button>
-            <button
-              //   onClick={handleGoogleSignUp}
-              className="btn btn-secondary btn-outline rounded-xl w-full my-1"
-            >
-              <FaGoogle size={18}></FaGoogle> SignUp with Google
-            </button>
+            <SocialLogin></SocialLogin>
           </form>
 
           <p className="text-sm text-center mt-6 text-gray-500">
