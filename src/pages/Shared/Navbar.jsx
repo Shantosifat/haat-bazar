@@ -13,7 +13,7 @@ const Navbar = ({ user, onLogout }) => {
 
   return (
     <nav className="bg-amber-200 shadow-md px-6 py-3">
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between py-2 ">
         {/* Left: Logo + Website Name */}
         <div className="mr-60">
           <Logo></Logo>
