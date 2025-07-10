@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import "react-datepicker/dist/react-datepicker.css";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
+ import toast, { Toaster } from "react-hot-toast";
 
 const AddProduct = () => {
   const { user } = UseAuth();
@@ -19,38 +20,41 @@ const AddProduct = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    const product = {
-      vendorEmail: user?.email,
-      vendorName: user?.displayName,
-      marketName: data.marketName,
-      date: date.toISOString().split("T")[0],
-      marketDescription: data.marketDescription,
-      itemName: data.itemName,
-      status: "pending",
-      image: data.image,
-      pricePerUnit: parseFloat(data.pricePerUnit),
-      prices: [
-        {
-          date: date.toISOString().split("T")[0],
-          price: parseFloat(data.pricePerUnit),
-        },
-      ],
-      itemDescription: data.itemDescription || "",
-    };
 
-    console.log(product);
-    // TODO: Send product to backend here
-    axiosSecure.post('/products', product).then((res) => {
-      console.log(res.data);
-      if (res.data.insertedId) {
-        console.log(product.date);
-        // console.log("Product added with status:", status );
-      }
-    });
-    // reset();
-    // navigate("/dashboard/vendor-products");
+const onSubmit = async (data) => {
+  const product = {
+    vendorEmail: user?.email,
+    vendorName: user?.displayName,
+    marketName: data.marketName,
+    date: date.toISOString().split("T")[0],
+    marketDescription: data.marketDescription,
+    itemName: data.itemName,
+    status: "pending",
+    image: data.image,
+    pricePerUnit: parseFloat(data.pricePerUnit),
+    prices: [
+      {
+        date: date.toISOString().split("T")[0],
+        price: parseFloat(data.pricePerUnit),
+      },
+    ],
+    itemDescription: data.itemDescription || "",
   };
+
+  try {
+    const res = await axiosSecure.post('/products', product);
+    if (res.data.insertedId) {
+      toast.success(" Product added successfully!");
+      
+      // reset();
+      // navigate("/dashboard/vendor-products");
+    }
+  } catch (error) {
+    console.error("Error adding product:", error);
+    toast.error("❌ Failed to add product. Please try again.");
+  }
+};
+
 
   return (
     <div className="max-w-4xl mx-auto p-8 mt-10 bg-base-100 shadow-xl rounded-2xl border border-base-300">
@@ -167,6 +171,7 @@ const AddProduct = () => {
           <button type="submit" className="btn btn-primary ">Submit Product</button>
         </div>
       </form>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };

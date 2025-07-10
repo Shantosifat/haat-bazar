@@ -8,6 +8,7 @@ import AuthLayout from "../Layouts/AuthLayout";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import PrivateRoute from "../Routes/PrivateRoute";
 import AddProduct from "../Dashboard/AddProduct/AddProduct";
+import MyProducts from "../Dashboard/MyProducts/MyProducts";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "addProduct",
         Component: AddProduct,
+      },
+      {
+        path: "myProduct",
+        Component: MyProducts,
       },
     ],
   },
