@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 import Loading from "../../pages/Shared/Loading";
 import UseAuth from "../../hooks/UseAuth";
+import Swal from "sweetalert2";
 
 const MyProducts = () => {
   const { user } = UseAuth();
@@ -28,24 +29,50 @@ const MyProducts = () => {
 
   // 🔴 Handle product delete
   const handleDelete = async (id) => {
-    try {
-      const res = await axiosSecure.delete(`/products/${id}`);
-      if (res.data?.deletedCount > 0) {
-        toast.success("✅ Product deleted successfully!");
-        refetch();
-        setDeletingProduct(null);
-      } else {
-        toast.error("⚠️ Failed to delete product.");
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to undo this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        const res = await axiosSecure.delete(`/products/${id}`);
+        if (res.data?.deletedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "✅ Product deleted successfully!",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+          refetch();
+          setDeletingProduct(null);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: "⚠️ Failed to delete product.",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Server Error",
+          text: "❌ Something went wrong on the server.",
+        });
       }
-    } catch (error) {
-      toast.error("❌ Server error while deleting.");
-      console.error(error);
     }
   };
 
   // 🔵 Handle update - Navigate to update page
   const handleUpdate = (id) => {
-    navigate(`/dashboard/update-product/${id}`);
+    navigate(`/dashboard/updateProduct/${id}`);
   };
 
   return (
@@ -104,7 +131,7 @@ const MyProducts = () => {
                       Update
                     </button>
                     <button
-                      onClick={() => setDeletingProduct(p)}
+                      onClick={() => handleDelete(p._id)}
                       className="btn btn-xs bg-red-600 text-white hover:bg-red-700"
                     >
                       Delete
@@ -114,34 +141,6 @@ const MyProducts = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {/* 🔴 Delete Confirmation Modal */}
-      {deletingProduct && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white p-6 rounded-xl max-w-sm w-full shadow-lg text-center">
-            <h3 className="text-lg font-semibold mb-4 text-red-700">
-              Confirm Delete
-            </h3>
-            <p className="mb-4">
-              Are you sure you want to delete <b>{deletingProduct.itemName}</b>?
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => handleDelete(deletingProduct._id)}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Yes, Delete
-              </button>
-              <button
-                onClick={() => setDeletingProduct(null)}
-                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>
