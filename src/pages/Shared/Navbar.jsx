@@ -114,7 +114,7 @@ const Navbar = () => {
                   title={user.name}
                 /> */}
                 <div className=" md:flex flex-col text-right">
-                <span className="font-semibold text-sm">
+                <span className="font-semibold text-black text-sm">
                   {user.displayName || user.email}
                 </span>
                 <span className="text-xs text-gray-500">Logged In</span>

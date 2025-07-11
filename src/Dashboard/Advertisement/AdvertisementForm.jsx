@@ -1,9 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
+import UseAuth from "../../hooks/UseAuth";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
+import Swal from "sweetalert2";
+import toast, { Toaster } from "react-hot-toast";
 
 const AdvertisementForm = () => {
+  const { user } = UseAuth();
   const axiosSecure = UseAxiosSecure();
   const {
     register,
@@ -13,89 +16,77 @@ const AdvertisementForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const formData = {
-      title: data.title,
-      description: data.description,
-      image: data.image,
-      status: "pending",
-      createdAt: new Date(),
-    };
-
     try {
-      const res = await axiosSecure.post("/advertisements", formData);
-      if (res.data.insertedId) {
-        Swal.fire("✅ Success!", "Ad submitted successfully!", "success");
+      const newAd = {
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        createdBy: user.email, // <-- Must include this!
+        status: "pending",
+        createdAt: new Date(),
+      };
+
+      const res = await axiosSecure.post("/ads", newAd);
+      if (res?.data?.insertedId) {
+        toast.success("Advertisement added successfully!");
         reset();
+      } else {
+        Swal.fire("Error", "Failed to add advertisement.", "error");
       }
-    } catch (err) {
-      console.error(err);
-      Swal.fire("❌ Error", "Something went wrong!", "error");
+    } catch (error) {
+      console.error("Add ad error:", error);
+      Swal.fire("Error", "Something went wrong.", "error");
     }
   };
 
   return (
-    <div className="w-11/12 mt-4 mx-auto px-6 py-8 rounded-2xl shadow-lg border border-gray-200">
-      <h2 className="text-3xl font-semibold text-center text-green-700 mb-8">
-        📢 Submit Advertisement
+    <div className=" w-4xl mx-auto p-4  rounded-lg shadow">
+      <h2 className="text-3xl text-center font-bold my-5 text-green-700">
+        Add New Advertisement
       </h2>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Ad Title */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Advertisement Title <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium mb-1">Ad Title</label>
           <input
             {...register("title", { required: true })}
-            className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-            placeholder="e.g. Super Discount on Local Veggies!"
+            className="input input-bordered w-full"
+            placeholder="Enter ad title"
           />
           {errors.title && (
-            <p className="text-sm text-red-600 mt-1">Title is required</p>
+            <p className="text-red-600 text-sm">Title is required</p>
           )}
         </div>
-
-        {/* Short Description */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Short Description <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium mb-1">Short Description</label>
           <textarea
             {...register("description", { required: true })}
-            rows={4}
-            className="textarea textarea-bordered w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-            placeholder="Write a compelling promotional message..."
+            className="textarea textarea-bordered w-full"
+            rows={3}
+            placeholder="Write a short description"
           />
           {errors.description && (
-            <p className="text-sm text-red-600 mt-1">Description is required</p>
+            <p className="text-red-600 text-sm">Description is required</p>
           )}
         </div>
-
-        {/* Image URL */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Banner Image URL <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium mb-1">Image URL</label>
           <input
             {...register("image", { required: true })}
-            className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-            placeholder="https://example.com/your-banner.jpg"
+            className="input input-bordered w-full"
+            placeholder="https://example.com/banner.jpg"
           />
           {errors.image && (
-            <p className="text-sm text-red-600 mt-1">Image URL is required</p>
+            <p className="text-red-600 text-sm">Image URL is required</p>
           )}
         </div>
-
-        {/* Submit Button */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="w-full btn bg-green-600 text-white hover:bg-green-700 transition duration-200"
-          >
-            🚀 Submit Advertisement
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="btn bg-green-600 w-full text-white hover:bg-green-700"
+        >
+          Add Advertisement
+        </button>
       </form>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

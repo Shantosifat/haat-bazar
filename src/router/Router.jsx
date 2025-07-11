@@ -11,6 +11,7 @@ import AddProduct from "../Dashboard/AddProduct/AddProduct";
 import MyProducts from "../Dashboard/MyProducts/MyProducts";
 import UpdateProduct from "../Dashboard/updateproduct/UpdateProduct";
 import AdvertisementForm from "../Dashboard/Advertisement/AdvertisementForm";
+import MyAdvertisements from "../Dashboard/Advertisement/MyAdvertisements";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "ads",
         Component: AdvertisementForm,
+      },
+      {
+        path: "myAds",
+        Component: MyAdvertisements,
       },
       {
         path: "updateProduct/:id",
