@@ -59,6 +59,9 @@ const DashboardLayout = () => {
             <NavLink to="/dashboard/myProduct" className="flex items-center gap-2">
               <FiShoppingCart /> My Products
             </NavLink>
+            <NavLink to="/dashboard/ads" className="flex items-center gap-2">
+              <FiShoppingCart />Add Advertisement 
+            </NavLink>
             <NavLink to="/dashboard/orders" className="flex items-center gap-2">
               <FiShoppingCart /> My Order List
             </NavLink>

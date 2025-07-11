@@ -34,7 +34,9 @@ const Navbar = () => {
       {user && (
         <>
           <li>
-            <NavLink  className="text-gray-800" to="/dashboard">Dashboard</NavLink>
+            <NavLink className="text-gray-800" to="/dashboard">
+              Dashboard
+            </NavLink>
           </li>
         </>
       )}
@@ -105,12 +107,18 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <img
+                {/* <img
                   src={user.profilePicUrl}
                   alt="User Profile"
                   className="w-9 h-9 rounded-full border border-gray-300"
                   title={user.name}
-                />
+                /> */}
+                <div className=" md:flex flex-col text-right">
+                <span className="font-semibold text-sm">
+                  {user.displayName || user.email}
+                </span>
+                <span className="text-xs text-gray-500">Logged In</span>
+              </div>
                 <button
                   onClick={handleLogOut}
                   className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50"
@@ -150,14 +158,21 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <img
+              {/* <img
                 src={user.profilePicUrl}
                 alt="User Profile"
                 className="w-9 h-9 rounded-full border border-gray-300 mx-auto"
                 title={user.name}
-              />
+                
+              /> */}
+              <div className=" md:flex flex-col text-right">
+                <span className="font-semibold text-sm">
+                  {user.displayName || user.email}
+                </span>
+                <span className="text-xs text-gray-500">Logged In</span>
+              </div>
               <button
-                onClick={onLogout}
+                onClick={handleLogOut}
                 className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 text-center"
               >
                 🚪 Logout
