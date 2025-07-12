@@ -7,11 +7,13 @@ import UseAuth from "../../hooks/UseAuth";
 import { useState } from "react";
 import SocialLogin from "./SocialLogin";
 import Swal from "sweetalert2";
+import UseAxios from "../../hooks/UseAxios";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { createUser, updateUserProfile } = UseAuth();
   const [profilePic, setProfilePic] = useState("");
+  const axiosInstance = UseAxios()
 
   const {
     register,
@@ -25,7 +27,7 @@ const SignUp = () => {
     createUser(data.email, data.password)
       .then(async (result) => {
         console.log(result.user);
-        navigate("/");
+        
         Swal.fire({
           icon: "success",
           title: "Sign Up Successful!",
@@ -33,16 +35,17 @@ const SignUp = () => {
           timer: 2000,
           showConfirmButton: false,
         });
+        navigate("/");
         // update user profile in db
 
-        // const userInfo = {
-        //   email: data.email,
-        //   role: "user", // deafult role
-        //   created_at: new Date().toISOString(),
-        //   last_log_in: new Date().toISOString(),
-        // };
-        // const userRes = await axiosInstance.post("/users", userInfo);
-        // console.log('updated user info', userRes.data);
+        const userInfo = {
+          email: data.email,
+          role: "user", // deafult role
+          created_at: new Date().toISOString(),
+          last_log_in: new Date().toISOString(),
+        };
+        const userRes = await axiosInstance.post("/users", userInfo);
+        console.log('updated user info', userRes.data);
         // update userprofile in firebase
         const userProfile = {
           displayName: data.name,
@@ -57,7 +60,7 @@ const SignUp = () => {
           });
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   };
   return (

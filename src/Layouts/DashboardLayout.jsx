@@ -65,9 +65,16 @@ const DashboardLayout = () => {
             <NavLink to="/dashboard/myAds" className="flex items-center gap-2">
               <FiShoppingCart />My Advertisements 
             </NavLink>
+            <NavLink to="/dashboard/allAds" className="flex items-center gap-2">
+              <FiShoppingCart /> All Advertisements
+            </NavLink>
+             <NavLink to="/dashboard/allUsers" className="flex items-center gap-2">
+              <FiShoppingCart /> All Users
+            </NavLink>
             <NavLink to="/dashboard/orders" className="flex items-center gap-2">
               <FiShoppingCart /> My Order List
             </NavLink>
+           
 
             <NavLink
               to="/dashboard/watchlist"

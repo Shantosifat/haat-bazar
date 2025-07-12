@@ -12,6 +12,8 @@ import MyProducts from "../Dashboard/MyProducts/MyProducts";
 import UpdateProduct from "../Dashboard/updateproduct/UpdateProduct";
 import AdvertisementForm from "../Dashboard/Advertisement/AdvertisementForm";
 import MyAdvertisements from "../Dashboard/Advertisement/MyAdvertisements";
+import AllUsers from "../Dashboard/Admin/AllUsers";
+import AllAdvertisements from "../Dashboard/Admin/AllAdvertisements";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ export const router = createBrowserRouter([
       {
         path: "myAds",
         Component: MyAdvertisements,
+      },
+      {
+        path: "allUsers",
+        Component: AllUsers,
+      },
+      {
+        path: "allAds",
+        Component: AllAdvertisements,
       },
       {
         path: "updateProduct/:id",

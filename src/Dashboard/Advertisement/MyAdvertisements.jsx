@@ -44,7 +44,7 @@ const MyAdvertisements = () => {
 
       const res = await axiosSecure.patch(`/ads/${selectedAd._id}`, updatedAd);
       if (res.data.modifiedCount > 0) {
-        toast.success("✅ Advertisement updated successfully.");
+        toast.success(" Advertisement updated successfully.");
         refetch();
         setIsModalOpen(false);
         setSelectedAd(null);
