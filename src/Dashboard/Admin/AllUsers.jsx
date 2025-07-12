@@ -29,7 +29,7 @@ const AllUsers = () => {
 
   return (
     <div className="px-10 pt-7">
-      <h2 className="text-3xl font-bold mb-5 text-center text-green-700">👥 All Users</h2>
+      <h2 className="text-3xl font-bold mb-5 text-center text-green-700"> All Users</h2>
       <div className="overflow-x-auto bg-slate-800 rounded-xl shadow">
         <table className="table w-full">
           <thead className="bg-green-100 text-green-800">

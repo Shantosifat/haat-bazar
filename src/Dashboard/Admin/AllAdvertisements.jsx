@@ -60,7 +60,7 @@ const AllAdvertisements = () => {
   return (
     <div className="px-10 pt-7">
       <h2 className="text-2xl font-bold text-green-700 mb-4">
-        📢 All Advertisements (Admin View)
+     All Advertisements (Admin View)
       </h2>
       <div className="overflow-x-auto bg-slate-600 rounded-xl shadow">
         <table className="table w-full">

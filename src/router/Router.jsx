@@ -14,6 +14,7 @@ import AdvertisementForm from "../Dashboard/Advertisement/AdvertisementForm";
 import MyAdvertisements from "../Dashboard/Advertisement/MyAdvertisements";
 import AllUsers from "../Dashboard/Admin/AllUsers";
 import AllAdvertisements from "../Dashboard/Admin/AllAdvertisements";
+import ErrorPage from "../pages/Shared/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -82,4 +83,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:'*',
+    Component: ErrorPage
+  }
 ]);
