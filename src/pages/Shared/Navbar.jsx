@@ -31,6 +31,11 @@ const Navbar = () => {
           All Products
         </NavLink>
       </li>
+      {/* <li>
+            <NavLink className="text-gray-800" to="/dashboard">
+              Dashboard
+            </NavLink>
+          </li> */}
       {user && (
         <>
           <li>
@@ -115,7 +120,7 @@ const Navbar = () => {
                 /> */}
                 <div className=" md:flex flex-col text-right">
                 <span className="font-semibold text-black text-sm">
-                  {user.displayName || user.email}
+                  { user.email}
                 </span>
                 <span className="text-xs text-gray-500">Logged In</span>
               </div>

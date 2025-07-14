@@ -3,11 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 import Loading from "../../pages/Shared/Loading";
+import { FiCheck, FiX } from "react-icons/fi";
 
 const AllAdvertisements = () => {
   const axiosSecure = UseAxiosSecure();
 
-  const { data: ads = [], isLoading, refetch } = useQuery({
+  const {
+    data: ads = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["admin-ads"],
     queryFn: async () => {
       const res = await axiosSecure.get("/ads");
@@ -15,18 +20,18 @@ const AllAdvertisements = () => {
     },
   });
 
-  const handleStatusChange = async (adId, newStatus) => {
+  const handleAccept = async (adId) => {
     try {
       const res = await axiosSecure.patch(`/ads/${adId}`, {
-        status: newStatus,
+        status: "approved",
       });
       if (res.data.modifiedCount > 0) {
-        Swal.fire("✅ Updated!", `Ad ${newStatus} successfully.`, "success");
+        Swal.fire("✅ Approved!", "Ad status set to approved.", "success");
         refetch();
       }
     } catch (error) {
       console.error(error);
-      Swal.fire("❌ Error", "Failed to update ad status.", "error");
+      Swal.fire("❌ Error", "Failed to approve the ad.", "error");
     }
   };
 
@@ -60,9 +65,9 @@ const AllAdvertisements = () => {
   return (
     <div className="px-10 pt-7">
       <h2 className="text-2xl font-bold text-green-700 mb-4">
-     All Advertisements (Admin View)
+        📢 All Advertisements (Admin View)
       </h2>
-      <div className="overflow-x-auto bg-slate-600 rounded-xl shadow">
+      <div className="overflow-x-auto  rounded-xl shadow">
         <table className="table w-full">
           <thead className="bg-green-100 text-green-800">
             <tr>
@@ -81,25 +86,36 @@ const AllAdvertisements = () => {
                 <td>{ad.title}</td>
                 <td>{ad.description}</td>
                 <td>
-                  <select
-                    value={ad.status}
-                    onChange={(e) =>
-                      handleStatusChange(ad._id, e.target.value)
-                    }
-                    className="select select-sm select-bordered"
+                  <span
+                    className={`badge ${
+                      ad.status === "approved"
+                        ? "badge-success"
+                        : ad.status === "rejected"
+                        ? "badge-error"
+                        : "badge-warning"
+                    }`}
                   >
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
+                    {ad.status}
+                  </span>
                 </td>
                 <td>{ad.createdBy || "—"}</td>
-                <td className="text-center">
+                <td className="flex gap-3 justify-center items-center">
+                  <button
+                    onClick={() => handleAccept(ad._id)}
+                    disabled={
+                      ad.status === "approved" || ad.status === "rejected"
+                    }
+                    className="btn btn-xs btn-success"
+                    aria-label="Accept"
+                  >
+                    <FiCheck />
+                  </button>
                   <button
                     onClick={() => handleDelete(ad._id)}
-                    className="btn btn-xs bg-red-600 text-white hover:bg-red-700"
+                    className="btn btn-xs btn-error"
+                    aria-label="Reject"
                   >
-                    Delete
+                    <FiX />
                   </button>
                 </td>
               </tr>

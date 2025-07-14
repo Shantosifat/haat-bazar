@@ -2,7 +2,7 @@ import signupAnimation from "../../assets/register/Animation - 1749909840681.jso
 import Lottie from "lottie-react";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import { useState } from "react";
 import SocialLogin from "./SocialLogin";
@@ -13,7 +13,9 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { createUser, updateUserProfile } = UseAuth();
   const [profilePic, setProfilePic] = useState("");
-  const axiosInstance = UseAxios()
+  const axiosInstance = UseAxios();
+  const location = useLocation();
+  const from = location.state?.from || "/";
 
   const {
     register,
@@ -27,7 +29,7 @@ const SignUp = () => {
     createUser(data.email, data.password)
       .then(async (result) => {
         console.log(result.user);
-        
+
         Swal.fire({
           icon: "success",
           title: "Sign Up Successful!",
@@ -35,7 +37,7 @@ const SignUp = () => {
           timer: 2000,
           showConfirmButton: false,
         });
-        navigate("/");
+       
         // update user profile in db
 
         const userInfo = {
@@ -45,7 +47,7 @@ const SignUp = () => {
           last_log_in: new Date().toISOString(),
         };
         const userRes = await axiosInstance.post("/users", userInfo);
-        console.log('updated user info', userRes.data);
+        console.log("updated user info", userRes.data);
         // update userprofile in firebase
         const userProfile = {
           displayName: data.name,
@@ -54,6 +56,7 @@ const SignUp = () => {
         updateUserProfile(userProfile)
           .then(() => {
             console.log("profile pic & name updated ");
+            navigate(from)
           })
           .catch((error) => {
             console.log(error);

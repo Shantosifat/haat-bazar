@@ -2,8 +2,10 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { FiBarChart2, FiHome, FiShoppingCart, FiTool } from "react-icons/fi";
 import Logo from "../pages/Shared/Logo";
+import useUserRole from "../hooks/UseUSerRole";
 
 const DashboardLayout = () => {
+  const { role, roleLoading } = useUserRole();
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -53,42 +55,78 @@ const DashboardLayout = () => {
             <NavLink to="/dashBoard" className="flex items-center gap-2">
               <FiHome /> Home
             </NavLink>
-            <NavLink to="/dashboard/addProduct" className="flex items-center gap-2">
-              <FiShoppingCart /> Add Product
-            </NavLink>
-            <NavLink to="/dashboard/myProduct" className="flex items-center gap-2">
-              <FiShoppingCart /> My Products
-            </NavLink>
-            <NavLink to="/dashboard/ads" className="flex items-center gap-2">
-              <FiShoppingCart />Add Advertisement 
-            </NavLink>
-            <NavLink to="/dashboard/myAds" className="flex items-center gap-2">
-              <FiShoppingCart />My Advertisements 
-            </NavLink>
-            <NavLink to="/dashboard/allAds" className="flex items-center gap-2">
-              <FiShoppingCart /> All Advertisements
-            </NavLink>
-             <NavLink to="/dashboard/allUsers" className="flex items-center gap-2">
-              <FiShoppingCart /> All Users
-            </NavLink>
-            <NavLink to="/dashboard/orders" className="flex items-center gap-2">
-              <FiShoppingCart /> My Order List
-            </NavLink>
-           
+            {/* vendor link */}
+            {!roleLoading && role === "vendor" && (
+              <>
+                <NavLink
+                  to="/dashboard/addProduct"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart /> Add Product
+                </NavLink>
+                <NavLink
+                  to="/dashboard/myProduct"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart /> My Products
+                </NavLink>
+                <NavLink
+                  to="/dashboard/ads"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart />
+                  Add Advertisement
+                </NavLink>
+                <NavLink
+                  to="/dashboard/myAds"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart />
+                  My Advertisements
+                </NavLink>
+              </>
+            )}
+            {/* admin link */}
+            {!roleLoading && role === "admin" && (
+              <>
+                <NavLink
+                  to="/dashboard/allAds"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart /> All Advertisements
+                </NavLink>
+                <NavLink
+                  to="/dashboard/allUsers"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart /> All Users
+                </NavLink>
+              </>
+            )}
+            {!roleLoading && role === "user" && (
+              <>
+                <NavLink
+                  to="/dashboard/orders"
+                  className="flex items-center gap-2"
+                >
+                  <FiShoppingCart /> My Order List
+                </NavLink>
 
-            <NavLink
-              to="/dashboard/watchlist"
-              className="flex items-center gap-2"
-            >
-              <FiTool /> Manage Watchlist
-            </NavLink>
+                <NavLink
+                  to="/dashboard/watchlist"
+                  className="flex items-center gap-2"
+                >
+                  <FiTool /> Manage Watchlist
+                </NavLink>
 
-            <NavLink
-              to="/dashboard/price-trends"
-              className="flex items-center gap-2"
-            >
-              <FiBarChart2 /> View Price Trends
-            </NavLink>
+                <NavLink
+                  to="/dashboard/price-trends"
+                  className="flex items-center gap-2"
+                >
+                  <FiBarChart2 /> View Price Trends
+                </NavLink>
+              </>
+            )}
           </div>
         </ul>
       </div>

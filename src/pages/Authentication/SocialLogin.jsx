@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router";
 import UseAxios from "../../hooks/UseAxios";
 
 const SocialLogin = () => {
-    const {googleSignin} = UseAuth()
+    const {googleSignin, setUser} = UseAuth()
     const axiosInstance = UseAxios()
     const navigate = useNavigate()
     const location = useLocation();
@@ -12,7 +12,8 @@ const SocialLogin = () => {
    const handleGoogleSignin = () => {
     googleSignin()
       .then(async (result) => {
-        console.log(result.user);
+        setUser(result.user);
+         navigate(from);
 
         // update user profile in db
         const user = result.user;
@@ -24,10 +25,10 @@ const SocialLogin = () => {
         };
         const userRes = await axiosInstance.post("/users", userInfo);
         console.log("updated user info", userRes.data);
-        navigate(from);
+       
       })
       .catch((error) => {
-        alert(error);
+        console.log(error);
       });
   };
   return (
