@@ -19,6 +19,7 @@ import Forbidden from "../pages/Forbidden/Forbidden";
 import VendorRoute from "../Routes/VendorRoute";
 import AllProducts from "../Dashboard/Admin/AllProducts";
 import ProductDetails from "../pages/Home/ProductSection/ProductDetails";
+import MyOrders from "../Dashboard/MyOrders/MyOrders";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ export const router = createBrowserRouter([
       {
         path: "updateProduct/:id",
         Component: UpdateProduct,
+      },
+      {
+        path: "orders",
+        Component: MyOrders,
       },
     ],
   },
