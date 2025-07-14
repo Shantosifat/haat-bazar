@@ -15,6 +15,9 @@ import MyAdvertisements from "../Dashboard/Advertisement/MyAdvertisements";
 import AllUsers from "../Dashboard/Admin/AllUsers";
 import AllAdvertisements from "../Dashboard/Admin/AllAdvertisements";
 import ErrorPage from "../pages/Shared/ErrorPage";
+import AdminRoute from "../Routes/AdminRoute";
+import Forbidden from "../pages/Forbidden/Forbidden";
+import VendorRoute from "../Routes/VendorRoute";
 
 export const router = createBrowserRouter([
   {
@@ -41,27 +44,51 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "addProduct",
-        Component: AddProduct,
+        element: (
+          <VendorRoute>
+            <AddProduct></AddProduct>
+          </VendorRoute>
+        ),
       },
       {
         path: "myProduct",
-        Component: MyProducts,
+        element: (
+          <VendorRoute>
+            <MyProducts></MyProducts>
+          </VendorRoute>
+        ),
       },
       {
         path: "ads",
-        Component: AdvertisementForm,
+        element: (
+          <VendorRoute>
+            <AdvertisementForm></AdvertisementForm>
+          </VendorRoute>
+        ),
       },
       {
         path: "myAds",
-        Component: MyAdvertisements,
+        element: (
+          <VendorRoute>
+            <MyAdvertisements></MyAdvertisements>
+          </VendorRoute>
+        ),
       },
       {
         path: "allUsers",
-        Component: AllUsers,
+        element: (
+          <AdminRoute>
+            <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: "allAds",
-        Component: AllAdvertisements,
+        element: (
+          <AdminRoute>
+            <AllAdvertisements></AllAdvertisements>
+          </AdminRoute>
+        ),
       },
       {
         path: "updateProduct/:id",
@@ -84,7 +111,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:'*',
-    Component: ErrorPage
-  }
+    path: "*",
+    Component: ErrorPage,
+  },
+  {
+    path: "forbidden",
+    Component: Forbidden,
+  },
 ]);
