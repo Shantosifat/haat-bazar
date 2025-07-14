@@ -18,6 +18,7 @@ import AdminRoute from "../Routes/AdminRoute";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import VendorRoute from "../Routes/VendorRoute";
 import AllProducts from "../Dashboard/Admin/AllProducts";
+import ProductDetails from "../pages/Home/ProductSection/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
+      {
+        path:'product/:id',
+        Component:ProductDetails
+      }
     ],
   },
   {
