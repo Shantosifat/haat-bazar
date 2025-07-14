@@ -15,7 +15,7 @@ const JoinAsVendor = () => {
           Are You a Local Seller?
         </h2>
         <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-          Sell your fresh produce, groceries, or essentials on HaatBazaar and
+          Sell your fresh produce, groceries, or essentials on কাঁচাবাজার and
           reach thousands of daily buyers across Bangladesh.
         </p>
         <motion.div

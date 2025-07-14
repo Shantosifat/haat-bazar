@@ -1,6 +1,17 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
-import { FiBarChart2, FiHome, FiShoppingCart, FiTool } from "react-icons/fi";
+import {
+  FiBarChart2,
+  FiCast,
+  FiHome,
+  FiList,
+  FiMonitor,
+  FiPackage,
+  FiPlusCircle,
+  FiShoppingCart,
+  FiTool,
+  FiUsers,
+} from "react-icons/fi";
 import Logo from "../pages/Shared/Logo";
 import useUserRole from "../hooks/UseUSerRole";
 
@@ -62,26 +73,26 @@ const DashboardLayout = () => {
                   to="/dashboard/addProduct"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart /> Add Product
+                  <FiPlusCircle /> Add Product
                 </NavLink>
                 <NavLink
                   to="/dashboard/myProduct"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart /> My Products
+                  <FiPackage /> My Products
                 </NavLink>
                 <NavLink
                   to="/dashboard/ads"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart />
+                  <FiCast />
                   Add Advertisement
                 </NavLink>
                 <NavLink
                   to="/dashboard/myAds"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart />
+                  <FiList />
                   My Advertisements
                 </NavLink>
               </>
@@ -93,13 +104,19 @@ const DashboardLayout = () => {
                   to="/dashboard/allAds"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart /> All Advertisements
+                  <FiMonitor /> All Advertisements
                 </NavLink>
                 <NavLink
                   to="/dashboard/allUsers"
                   className="flex items-center gap-2"
                 >
-                  <FiShoppingCart /> All Users
+                  <FiUsers /> All Users
+                </NavLink>
+                <NavLink
+                  to="/dashboard/products"
+                  className="flex items-center gap-2"
+                >
+                  <FiUsers /> All Products
                 </NavLink>
               </>
             )}

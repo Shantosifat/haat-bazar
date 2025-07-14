@@ -2,21 +2,30 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
+import Loading from "../../pages/Shared/Loading";
 
 const AllUsers = () => {
   const axiosSecure = UseAxiosSecure();
 
-  const { data: users = [], refetch, isLoading } = useQuery({
+  const {
+    data: users = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["all-users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
-
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   const handleRoleUpdate = async (userId, newRole) => {
     try {
-      const res = await axiosSecure.patch(`/users/role/${userId}`, { role: newRole });
+      const res = await axiosSecure.patch(`/users/role/${userId}`, {
+        role: newRole,
+      });
       if (res.data.modifiedCount > 0) {
         Swal.fire("✅ Updated!", "User role updated successfully.", "success");
         refetch();
@@ -29,7 +38,10 @@ const AllUsers = () => {
 
   return (
     <div className="px-10 pt-7">
-      <h2 className="text-3xl font-bold mb-5 text-center text-green-700"> All Users</h2>
+      <h2 className="text-3xl font-bold mb-5 text-center text-green-700">
+        {" "}
+        All Users
+      </h2>
       <div className="overflow-x-auto bg-slate-800 rounded-xl shadow">
         <table className="table w-full">
           <thead className="bg-green-100 text-green-800">
@@ -48,7 +60,18 @@ const AllUsers = () => {
                 <td>{user.name || "N/A"}</td>
                 <td>{user.email}</td>
                 <td>
-                  <span className="badge badge-info">{user.role}</span>
+                  {/* pick the badge colour based on role */}
+                  <span
+                    className={`badge ${
+                      {
+                        admin: "badge-success", // green
+                        vendor: "badge-warning", // yellow
+                        user: "badge-info", // blue
+                      }[user.role] || "badge-neutral" // fallback
+                    }`}
+                  >
+                    {user.role}
+                  </span>
                 </td>
                 <td className="flex gap-2 justify-center">
                   {["admin", "vendor", "user"].map((role) => (
@@ -56,11 +79,14 @@ const AllUsers = () => {
                       key={role}
                       disabled={user.role === role}
                       onClick={() => handleRoleUpdate(user._id, role)}
-                      className={`btn btn-outline ${
-                        user.role === role ? "btn-disabled" : "btn-outline"
+                      className={`btn btn-xs ${
+                        user.role === role
+                          ? "btn-disabled opacity-60"
+                          : "btn-outline"
                       }`}
                     >
-                      Make {role}
+                      Make&nbsp;{role}
+                      {/* Make {role} */}
                     </button>
                   ))}
                 </td>

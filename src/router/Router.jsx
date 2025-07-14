@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import MainLayouts from "../Layouts/MainLayouts";
 import Home from "../Components/Home";
-import AllProducts from "../pages/Home/AllProducts/AllProducts";
 import Login from "../pages/Authentication/Login";
 import SignUp from "../pages/Authentication/SignUp";
 import AuthLayout from "../Layouts/AuthLayout";
@@ -18,6 +17,7 @@ import ErrorPage from "../pages/Shared/ErrorPage";
 import AdminRoute from "../Routes/AdminRoute";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import VendorRoute from "../Routes/VendorRoute";
+import AllProducts from "../Dashboard/Admin/AllProducts";
 
 export const router = createBrowserRouter([
   {
@@ -27,10 +27,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
-      },
-      {
-        path: "allProducts",
-        Component: AllProducts,
       },
     ],
   },
@@ -87,6 +83,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllAdvertisements></AllAdvertisements>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "products",
+        element: (
+          <AdminRoute>
+            <AllProducts></AllProducts>
           </AdminRoute>
         ),
       },

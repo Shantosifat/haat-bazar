@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
         transition={{ duration: 0.6 }}
       >
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          Why Choose HaatBazaar?
+          Why Choose কাঁচাবাজার?
         </h2>
         <p className="text-gray-600 mb-8">
           We are committed to connecting local sellers and buyers with real-time
