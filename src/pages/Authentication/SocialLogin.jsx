@@ -4,16 +4,16 @@ import { useLocation, useNavigate } from "react-router";
 import UseAxios from "../../hooks/UseAxios";
 
 const SocialLogin = () => {
-    const {googleSignin, setUser} = UseAuth()
-    const axiosInstance = UseAxios()
-    const navigate = useNavigate()
-    const location = useLocation();
+  const { googleSignin, setUser } = UseAuth();
+  const axiosInstance = UseAxios();
+  const navigate = useNavigate();
+  const location = useLocation();
   const from = location.state?.from || "/";
-   const handleGoogleSignin = () => {
+  const handleGoogleSignin = () => {
     googleSignin()
       .then(async (result) => {
         setUser(result.user);
-         navigate(from);
+        navigate(from);
 
         // update user profile in db
         const user = result.user;
@@ -25,7 +25,6 @@ const SocialLogin = () => {
         };
         const userRes = await axiosInstance.post("/users", userInfo);
         console.log("updated user info", userRes.data);
-       
       })
       .catch((error) => {
         console.log(error);
@@ -35,6 +34,7 @@ const SocialLogin = () => {
     <div className="w-full">
       <p className="text-black ml-44 mb-2">OR</p>
       <button
+        type="button"
         onClick={handleGoogleSignin}
         className="btn bg-white w-full rounded-xl text-black border-[#e5e5e5]"
       >

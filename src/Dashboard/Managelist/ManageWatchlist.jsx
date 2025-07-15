@@ -78,7 +78,7 @@ const ManageWatchlist = () => {
   /* ── component markup ── */
   return (
     <section className="p-6">
-      <h2 className="text-2xl font-bold mb-6">⭐ Manage Watch‑list</h2>
+      <h2 className="text-2xl font-bold mb-6"> Manage Watch‑list</h2>
 
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">

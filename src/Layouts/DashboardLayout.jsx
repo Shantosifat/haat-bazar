@@ -118,6 +118,12 @@ const DashboardLayout = () => {
                 >
                   <FiUsers /> All Products
                 </NavLink>
+                <NavLink
+                  to="/dashboard/allOrders"
+                  className="flex items-center gap-2"
+                >
+                  <FiUsers /> All Orders
+                </NavLink>
               </>
             )}
             {!roleLoading && role === "user" && (

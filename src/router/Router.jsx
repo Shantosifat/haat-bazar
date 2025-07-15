@@ -21,6 +21,8 @@ import AllProducts from "../Dashboard/Admin/AllProducts";
 import ProductDetails from "../pages/Home/ProductSection/ProductDetails";
 import MyOrders from "../Dashboard/MyOrders/MyOrders";
 import ManageWatchlist from "../Dashboard/Managelist/ManageWatchlist";
+import Products from "../pages/Products/Products";
+import AllOrders from "../Dashboard/Admin/AllOrders";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path:'product/:id',
         Component:ProductDetails
+      },
+      {
+        path:'products',
+        Component: Products
       }
     ],
   },
@@ -90,6 +96,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllAdvertisements></AllAdvertisements>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "allOrders",
+        element: (
+          <AdminRoute>
+            <AllOrders></AllOrders>
           </AdminRoute>
         ),
       },
