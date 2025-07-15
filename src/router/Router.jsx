@@ -20,6 +20,7 @@ import VendorRoute from "../Routes/VendorRoute";
 import AllProducts from "../Dashboard/Admin/AllProducts";
 import ProductDetails from "../pages/Home/ProductSection/ProductDetails";
 import MyOrders from "../Dashboard/MyOrders/MyOrders";
+import ManageWatchlist from "../Dashboard/Managelist/ManageWatchlist";
 
 export const router = createBrowserRouter([
   {
@@ -107,6 +108,10 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         Component: MyOrders,
+      },
+      {
+        path: "watchlist",
+        Component: ManageWatchlist,
       },
     ],
   },
