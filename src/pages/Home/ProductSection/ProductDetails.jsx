@@ -83,6 +83,7 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = () => navigate(`/buy/${product._id}`);
+  
 
   // Loading/error
   if (productLoading || watchlistLoading) return <Loading />;

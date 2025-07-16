@@ -23,6 +23,7 @@ import MyOrders from "../Dashboard/MyOrders/MyOrders";
 import ManageWatchlist from "../Dashboard/Managelist/ManageWatchlist";
 import Products from "../pages/Products/Products";
 import AllOrders from "../Dashboard/Admin/AllOrders";
+import PaymentCard from "../Dashboard/Payment/PaymentCard";
 
 export const router = createBrowserRouter([
   {
@@ -122,6 +123,10 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         Component: MyOrders,
+      },
+      {
+        path: "paymentcard/:id",
+        Component: PaymentCard,
       },
       {
         path: "watchlist",

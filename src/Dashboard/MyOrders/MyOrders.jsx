@@ -9,41 +9,40 @@ const MyOrders = () => {
   const { user } = UseAuth();
   const navigate = useNavigate();
 
-  // Fetch watch‑list items for this user
+  /* ── fetch watch‑list items ── */
   const {
     data: orders = [],
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["my-watchlist", user?.email],
+    queryKey: ["my-orders", user?.email],
     enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/watchlist?email=${user.email}`);
-      return res.data;           // [{ productId, itemName, marketName, pricePerUnit, date, … }]
-    },
+    queryFn: async () =>
+      (await axiosSecure.get(`/watchlist?email=${user.email}`)).data,
     staleTime: 60_000,
   });
 
+  /* ── handlers ── */
+  const handleViewDetails = (productId) => navigate(`/product/${productId}`);
+  const handlePay = (id) => {navigate(`/dashboard/paymentcard/${id}`);} 
+
+  /* ── states ── */
   if (isLoading) return <Loading />;
   if (isError)
     return (
-      <div className="text-center text-red-600 mt-10">
+      <p className="text-center text-red-600 mt-10">
         Failed to load watch‑list: {error.message}
-      </div>
+      </p>
     );
-
   if (orders.length === 0)
     return (
-      <div className="text-center mt-10 text-gray-500">
+      <p className="text-center mt-10 text-gray-500">
         No items in your watch‑list yet.
-      </div>
+      </p>
     );
 
-  const handleViewDetails = (productId) => {
-    navigate(`/product/${productId}`);
-  };
-
+  /* ── table ── */
   return (
     <section className="p-6">
       <h2 className="text-2xl font-bold mb-6">⭐ My Watch‑list</h2>
@@ -53,28 +52,52 @@ const MyOrders = () => {
           <thead>
             <tr className="bg-base-200 text-base font-semibold">
               <th>#</th>
-              <th>🛍️ Product Name</th>
+              <th>🛍️ Product</th>
               <th>🏪 Market</th>
               <th>৳ Price</th>
               <th>📅 Date</th>
+              <th>💳 Payment</th>   {/* new */}
               <th className="text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {orders.map((item, idx) => (
-              <tr key={item.productId}>
+              <tr key={item._id /* watchlist doc id */}>
                 <td>{idx + 1}</td>
                 <td>{item.itemName}</td>
                 <td>{item.marketName}</td>
                 <td>৳{item.pricePerUnit}/kg</td>
                 <td>{new Date(item.date).toLocaleDateString()}</td>
-                <td className="text-center">
+
+                {/* payment badge */}
+                <td>
+                  <span
+                    className={`badge ${
+                      item.payment_status === "paid"
+                        ? "badge-success"
+                        : "badge-warning"
+                    }`}
+                  >
+                    {item.payment_status || "unpaid"}
+                  </span>
+                </td>
+
+                {/* actions */}
+                <td className="text-center space-x-2">
                   <button
-                    className="btn btn-sm btn-info"
+                    className="btn btn-xs btn-info"
                     onClick={() => handleViewDetails(item.productId)}
                   >
-                    🔍 View Details
+                    🔍 Details
+                  </button>
+
+                  <button
+                    className="btn btn-xs btn-primary"
+                    onClick={() => handlePay(item._id)}
+                    disabled={item.payment_status === "paid"}
+                  >
+                    💳 Pay
                   </button>
                 </td>
               </tr>
