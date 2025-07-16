@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
@@ -6,42 +6,65 @@ import Loading from "../../pages/Shared/Loading";
 
 const AllUsers = () => {
   const axiosSecure = UseAxiosSecure();
+  const [search, setSearch] = useState("");   // controlled input
+  const [query,  setQuery]  = useState("");   // debounced / submitted term
 
+  /* ---- fetch users (filtered by query) ---- */
   const {
     data: users = [],
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["all-users"],
+    queryKey: ["all-users", query],           // include query in key
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const url = query ? `/users?q=${encodeURIComponent(query)}` : "/users";
+      const res = await axiosSecure.get(url);
       return res.data;
     },
+    keepPreviousData: true,
   });
-  if (isLoading) {
-    return <Loading></Loading>;
-  }
+
+  /* ---- update role (unchanged logic) ---- */
   const handleRoleUpdate = async (userId, newRole) => {
     try {
-      const res = await axiosSecure.patch(`/users/role/${userId}`, {
-        role: newRole,
-      });
+      const res = await axiosSecure.patch(`/users/role/${userId}`, { role: newRole });
       if (res.data.modifiedCount > 0) {
-        Swal.fire("✅ Updated!", "User role updated successfully.", "success");
+        Swal.fire("✅ Updated!", "User role updated.", "success");
         refetch();
       }
-    } catch (error) {
+    } catch (err) {
       Swal.fire("❌ Error", "Failed to update role.", "error");
-      console.error(error);
     }
   };
 
+  /* ---- search submit ---- */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setQuery(search.trim());
+  };
+
+  if (isLoading) return <Loading />;
+
   return (
     <div className="px-10 pt-7">
-      <h2 className="text-3xl font-bold mb-5 text-center text-green-700">
-        {" "}
+      <h2 className="text-3xl font-bold text-center text-green-700 mb-5">
         All Users
       </h2>
+
+      {/* Search bar */}
+      <form onSubmit={handleSubmit} className="mb-4 max-w-md mx-auto flex">
+        <input
+          type="text"
+          value={search}
+          placeholder="Search by name or email…"
+          onChange={(e) => setSearch(e.target.value)}
+          className="input input-bordered flex-1"
+        />
+        <button className="btn btn-primary ml-2" type="submit">
+          Search
+        </button>
+      </form>
+
       <div className="overflow-x-auto bg-slate-800 rounded-xl shadow">
         <table className="table w-full">
           <thead className="bg-green-100 text-green-800">
@@ -54,44 +77,47 @@ const AllUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr key={user._id}>
-                <td>{index + 1}</td>
-                <td>{user.name || "N/A"}</td>
-                <td>{user.email}</td>
+            {users.map((u, idx) => (
+              <tr key={u._id}>
+                <td>{idx + 1}</td>
+                <td>{u.name || "N/A"}</td>
+                <td>{u.email}</td>
                 <td>
-                  {/* pick the badge colour based on role */}
                   <span
                     className={`badge ${
                       {
-                        admin: "badge-success", // green
-                        vendor: "badge-warning", // yellow
-                        user: "badge-info", // blue
-                      }[user.role] || "badge-neutral" // fallback
+                        admin: "badge-success",
+                        vendor: "badge-warning",
+                        user:  "badge-info",
+                      }[u.role] || "badge-neutral"
                     }`}
                   >
-                    {user.role}
+                    {u.role}
                   </span>
                 </td>
                 <td className="flex gap-2 justify-center">
-                  {["admin", "vendor", "user"].map((role) => (
+                  {["admin", "vendor", "user"].map((r) => (
                     <button
-                      key={role}
-                      disabled={user.role === role}
-                      onClick={() => handleRoleUpdate(user._id, role)}
+                      key={r}
+                      disabled={u.role === r}
+                      onClick={() => handleRoleUpdate(u._id, r)}
                       className={`btn btn-xs ${
-                        user.role === role
-                          ? "btn-disabled opacity-60"
-                          : "btn-outline"
+                        u.role === r ? "btn-disabled" : "btn-outline"
                       }`}
                     >
-                      Make&nbsp;{role}
-                      {/* Make {role} */}
+                      Make&nbsp;{r}
                     </button>
                   ))}
                 </td>
               </tr>
             ))}
+            {users.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center text-gray-400 py-6">
+                  No users found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

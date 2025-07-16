@@ -1,8 +1,9 @@
-/*  ───────────────────────────────────────────────────────────
-    ProductSection.jsx  •  Shows 6 latest approved markets
-    ─────────────────────────────────────────────────────────── */
+// ProductSection.jsx – enhanced with inside‑card animations
+import React from "react";
 import { Link, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+
 import UseAuth from "../../../hooks/UseAuth";
 import Loading from "../../Shared/Loading";
 import UseAxios from "../../../hooks/UseAxios";
@@ -23,7 +24,7 @@ const ProductSection = () => {
       const res = await axiosSecure.get("/products/approved?limit=6");
       return res.data || [];
     },
-    staleTime: 60_000, // 1minute
+    staleTime: 60_000,
   });
 
   if (isLoading) return <Loading />;
@@ -34,12 +35,10 @@ const ProductSection = () => {
       </div>
     );
 
-  /* ── helper to extract the most current price on each product ── */
+  /* helper: latest price */
   const latestPrice = (product) => {
-    // prices array might be unsorted; grab newest by date
     if (!product.prices || product.prices.length === 0)
       return product.pricePerUnit;
-
     const latest = [...product.prices].sort(
       (a, b) => new Date(b.date) - new Date(a.date)
     )[0];
@@ -47,52 +46,73 @@ const ProductSection = () => {
   };
 
   const handleViewDetails = (id) => {
-    if (!user) {
-      navigate("/login", { replace: true });
-    } else {
-      navigate(`/product/${id}`);
-    }
+    if (!user) navigate("/login", { replace: true });
+    else navigate(`/product/${id}`);
+  };
+
+  /* ── animation variants ── */
+  const fadeIn = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
-    <section className="my-12">
-      <h2 className="text-3xl font-semibold mb-6">Market Highlights</h2>
+    <motion.section
+      className="my-12"
+      initial="hidden"
+      whileInView="visible"
+      transition={{ staggerChildren: 0.15 }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <motion.h2
+        className="text-3xl text-center font-semibold mb-6"
+        variants={fadeIn}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        Market Highlights
+      </motion.h2>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((p) => (
-          <div
+          <motion.div
             key={p._id}
-            className="card bg-base-100 shadow-md hover:shadow-xl transition"
+            className="card bg-base-100 shadow-md hover:shadow-xl transition group"
+            variants={fadeIn}
+            whileHover={{ y: -6, scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 200, damping: 18 }}
           >
-            {/* image */}
-            <figure className="relative h-40 overflow-hidden">
-              <img
+            {/* image with subtle zoom on card hover */}
+            <motion.figure
+              className="relative h-40 overflow-hidden"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <motion.img
                 src={p.image}
                 alt={p.itemName}
                 className="object-cover w-full h-full"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
               />
-              {/* date badge */}
               <span className="absolute top-2 left-2 badge badge-accent">
                 {new Date(p.date).toLocaleDateString()}
               </span>
-            </figure>
+            </motion.figure>
 
             {/* body */}
             <div className="card-body p-4">
-              {/* market name */}
               <h3 className="text-lg font-bold">🛒 {p.marketName}</h3>
-
-              {/* item + price */}
               <p className="mt-2">
                 {p.itemName && (
                   <>
-                    📋 {p.itemName} —{" "}
-                    <span className="font-semibold">৳{latestPrice(p)}/kg</span>
+                    📋 {p.itemName} —
+                    <span className="font-semibold"> ৳{latestPrice(p)}/kg</span>
                   </>
                 )}
               </p>
-
-              {/* view details */}
               <div className="card-actions justify-end mt-4">
                 <button
                   onClick={() => handleViewDetails(p._id)}
@@ -102,17 +122,20 @@ const ProductSection = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      {/* optional “See more” button */}
-      <div className="text-center mt-10">
+      <motion.div
+        className="text-center mt-10"
+        variants={fadeIn}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         <Link to="/products" className="btn btn-outline">
           Browse All Markets
         </Link>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 

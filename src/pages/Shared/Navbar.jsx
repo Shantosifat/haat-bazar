@@ -22,12 +22,12 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink className="text-gray-800 " to="/">
+        <NavLink className=" font-semibold" to="/">
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink className="text-gray-800" to="/products">
+        <NavLink className=" font-semibold" to="/products">
           All Products
         </NavLink>
       </li>
@@ -39,7 +39,7 @@ const Navbar = () => {
       {user && (
         <>
           <li>
-            <NavLink className="text-gray-800" to="/dashboard">
+            <NavLink className=" font-semibold" to="/dashboard">
               Dashboard
             </NavLink>
           </li>
@@ -49,7 +49,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-amber-200 shadow-md px-6 py-3">
+    <nav className="bg-slate-700  shadow-md px-6 py-3">
       <div className="flex items-center justify-between py-2 ">
         {/* Left: Logo + Website Name */}
         <div className="mr-60">
@@ -58,7 +58,7 @@ const Navbar = () => {
 
         {/* Center: All Products */}
         <div className="w-1/3 text-center hidden md:block">
-          <ul className="menu menu-horizontal px-1">{links}</ul>
+          <ul className="menu menu-horizontal pl-5">{links}</ul>
         </div>
 
         {/* Right: Hamburger + Auth/User */}

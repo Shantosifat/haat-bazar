@@ -63,9 +63,9 @@ const DashboardLayout = () => {
             <Logo></Logo>
           </div>
           <div className="space-y-4">
-            <NavLink to="/dashBoard" className="flex items-center gap-2">
+            {/* <NavLink to="/dashBoard" className="flex items-center gap-2">
               <FiHome /> Home
-            </NavLink>
+            </NavLink> */}
             {/* vendor link */}
             {!roleLoading && role === "vendor" && (
               <>
@@ -143,13 +143,17 @@ const DashboardLayout = () => {
                 </NavLink>
 
                 <NavLink
-                  to="/dashboard/price-trends"
+                  to="/dashboard/priceTrends"
                   className="flex items-center gap-2"
                 >
                   <FiBarChart2 /> View Price Trends
                 </NavLink>
               </>
             )}
+            <NavLink to="/login" className="flex items-center gap-2">
+              <FiBarChart2 />
+              Log Out
+            </NavLink>
           </div>
         </ul>
       </div>
