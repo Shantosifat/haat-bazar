@@ -41,8 +41,8 @@ const AdvertisementCarousel = () => {
     return <p className="text-center text-gray-500 my-10">No approved ads available.</p>;
 
   return (
-    <section className="max-w-7xl mx-auto min-h-[400px] my-10">
-      <h2 className="text-2xl font-bold mb-4 text-center"> Advertisement Highlights</h2>
+    <section className=" min-h-[400px] my-10 rounded-2xl">
+      <h2 className="text-3xl font-bold mb-4 text-center"> Advertisement Highlights</h2>
 
       <Carousel
         showThumbs={false}
