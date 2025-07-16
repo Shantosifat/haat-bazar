@@ -14,7 +14,7 @@ const MyAdvertisements = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
-    data: ads = [],
+    data: {ads = []}={},
     isLoading,
     refetch,
   } = useQuery({

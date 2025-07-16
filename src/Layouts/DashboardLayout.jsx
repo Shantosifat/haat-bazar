@@ -63,9 +63,9 @@ const DashboardLayout = () => {
             <Logo></Logo>
           </div>
           <div className="space-y-4">
-            {/* <NavLink to="/dashBoard" className="flex items-center gap-2">
+            <NavLink to="/dashBoard" className="flex items-center gap-2">
               <FiHome /> Home
-            </NavLink> */}
+            </NavLink>
             {/* vendor link */}
             {!roleLoading && role === "vendor" && (
               <>

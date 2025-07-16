@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import UseAuth from "./UseAuth";
-import UseAxios from "./UseAxios";
+import UseAxiosSecure from "./UseAxiosSecure";
 
 
 const useUserRole = () => {
   const { user, loading: authLoading } = UseAuth();
-  const axiosSecure = UseAxios();
+  const axiosSecure = UseAxiosSecure();
 
   const {
     data={},
@@ -32,37 +32,4 @@ const useUserRole = () => {
 
 export default useUserRole;
 
-// hooks/useUserRole.js
-// import { useQuery } from "@tanstack/react-query";
-// import axios from "axios";
-// import UseAuth from "./UseAuth";
 
-// const axiosPublic = axios.create({
-//   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
-// });
-
-// const useUserRole = () => {
-//   const { user, loading: authLoading } = UseAuth();
-
-//   const {
-//     data = {},           // will hold { role: "vendor", previous_role: … }
-//     isLoading: roleLoading,
-//   } = useQuery({
-//     queryKey: ["user-role", user?.email],
-//     enabled: !authLoading && !!user?.email,
-//     queryFn: async () => {
-//       const res = await axiosPublic.get(
-//         `/users/role?email=${encodeURIComponent(user.email)}`
-//       );
-//       return res.data;
-//     },
-//     staleTime: 60_000,
-//   });
-
-//   return {
-//     role: (data.role || "user").trim().toLowerCase(),
-//     roleLoading: authLoading || roleLoading,
-//   };
-// };
-
-// export default useUserRole;

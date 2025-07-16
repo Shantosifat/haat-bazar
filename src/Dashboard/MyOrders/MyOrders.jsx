@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import Loading from "../../pages/Shared/Loading";
-import UseAxios from "../../hooks/UseAxios";
+import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 
 const MyOrders = () => {
-  const axiosSecure = UseAxios();
+  const axiosSecure = UseAxiosSecure();
   const { user } = UseAuth();
   const navigate = useNavigate();
 

@@ -5,14 +5,14 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import UseAxios from "../../hooks/UseAxios";
 import UseAuth from "../../hooks/UseAuth";
 import Loading from "../../pages/Shared/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 
 const ManageWatchlist = () => {
-  const axiosSecure = UseAxios();
+  const axiosSecure = UseAxiosSecure();
   const { user } = UseAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();

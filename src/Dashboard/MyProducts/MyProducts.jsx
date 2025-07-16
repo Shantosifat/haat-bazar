@@ -15,7 +15,7 @@ const MyProducts = () => {
 
   // 🔄 Fetch all products for the current vendor
   const {
-    data: products = [],
+    data: { products = [] } = {},
     isLoading,
     refetch,
   } = useQuery({
