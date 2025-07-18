@@ -175,12 +175,12 @@ const AllProducts = () => {
                     >
                       ✖
                     </button>
-                    <Link
-                      to={`/dashboard/vendor/updateProduct/${p._id}`}
+                    {/* <Link
+                      to={`/dashboard/updateProduct/${p._id}`}
                       className="btn btn-xs btn-info"
                     >
                       ✎
-                    </Link>
+                    </Link> */}
                     <button
                       onClick={() => handleDelete(p._id)}
                       className="btn btn-xs btn-outline btn-error"
