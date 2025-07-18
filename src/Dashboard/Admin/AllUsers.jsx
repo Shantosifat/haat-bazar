@@ -33,7 +33,7 @@ const AllUsers = () => {
         refetch();
       }
     } catch (err) {
-      Swal.fire("❌ Error", "Failed to update role.", "error");
+      Swal.fire("❌ Error", "Failed to update role.");
     }
   };
 

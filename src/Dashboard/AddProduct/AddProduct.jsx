@@ -46,7 +46,7 @@ const onSubmit = async (data) => {
     if (res.data.insertedId) {
       toast.success(" Product added successfully!");
       
-      // reset();
+      reset();
       // navigate("/dashboard/vendor-products");
     }
   } catch (error) {

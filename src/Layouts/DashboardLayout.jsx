@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import {
   FiBarChart2,
   FiCast,
@@ -14,9 +14,25 @@ import {
 } from "react-icons/fi";
 import Logo from "../pages/Shared/Logo";
 import useUserRole from "../hooks/UseUSerRole";
+import UseAuth from "../hooks/UseAuth";
+import Swal from "sweetalert2";
 
 const DashboardLayout = () => {
+  const { logOut } = UseAuth();
+  const navigate = useNavigate();
+
   const { role, roleLoading } = useUserRole();
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        Swal.fire("Log Out Successful!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -150,10 +166,12 @@ const DashboardLayout = () => {
                 </NavLink>
               </>
             )}
-            <NavLink to="/login" className="flex items-center gap-2">
-              <FiBarChart2 />
-              Log Out
-            </NavLink>
+            <button
+              onClick={handleLogOut}
+              className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50"
+            >
+              🚪 Logout
+            </button>
           </div>
         </ul>
       </div>

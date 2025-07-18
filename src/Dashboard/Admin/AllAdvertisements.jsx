@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 import Loading from "../../pages/Shared/Loading";
 import { FiCheck, FiX } from "react-icons/fi";
 import { toast, Toaster } from "react-hot-toast";
+import UseAxiosSecure from "../../hooks/UseAxiosSecure";
 
 const PAGE_SIZE = 10;
 
@@ -13,11 +13,7 @@ const AllAdvertisements = () => {
   const [page, setPage] = useState(1);
 
   /* ── fetch one page of ads ── */
-  const {
-    data,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin-ads", page],
     keepPreviousData: true,
     queryFn: async () => {
@@ -26,21 +22,26 @@ const AllAdvertisements = () => {
     },
   });
 
-  const ads   = data?.ads   || [];
+  const ads = data?.ads || [];
   const total = data?.total || 0;
   const pageCount = Math.ceil(total / PAGE_SIZE);
 
   /* ───── action helpers (unchanged logic) ───── */
   const handleAccept = async (adId) => {
     try {
-      const res = await axiosSecure.patch(`/ads/${adId}`, { status: "approved" });
-      if (res.data.modifiedCount > 0) {
+      const res = await axiosSecure.patch(`/ads/${adId}`, {
+        status: "approved",
+      });
+
+      if (res?.data?.modifiedCount > 0) {
         toast.success("Ad approved");
         refetch();
+      } else {
+        toast.error("Approval failed");
       }
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to approve");
+      console.error("Error approving ad:", err);
+      toast.error("Server error");
     }
   };
 

@@ -12,32 +12,32 @@ const UseAxiosSecure = () => {
 
   axiosSecure.interceptors.request.use(
     (config) => {
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
+      if (user?.accessToken) {
+        config.headers.authorization = `Bearer ${user.accessToken}`;
+      }
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
   axiosSecure.interceptors.response.use(
-    (res) => {
-      return res;
-    },
+    (res) => res,
     (error) => {
+      const status = error.response?.status;
       console.log("inside res interceptor", error);
-      const status = error.status;
+
       if (status === 403) {
         navigate("/forbidden");
       } else if (status === 401) {
         logout()
-          .then(() => {
-            navigate("/login");
-          })
+          .then(() => navigate("/login"))
           .catch(() => {});
       }
+
+      return Promise.reject(error); // ✅ send error back to caller
     }
   );
+
   return axiosSecure;
 };
 
