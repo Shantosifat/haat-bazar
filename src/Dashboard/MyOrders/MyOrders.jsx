@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import Loading from "../../pages/Shared/Loading";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
+import useUserRole from "../../hooks/UseUSerRole";
 
 const MyOrders = () => {
   const axiosSecure = UseAxiosSecure();
@@ -85,6 +86,7 @@ const MyOrders = () => {
 
                 {/* actions */}
                 <td className="text-center space-x-2">
+          
                   <button
                     className="btn btn-xs btn-info"
                     onClick={() => handleViewDetails(item.productId)}
@@ -99,6 +101,7 @@ const MyOrders = () => {
                   >
                     💳 Pay
                   </button>
+                   
                 </td>
               </tr>
             ))}

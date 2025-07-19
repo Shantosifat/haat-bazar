@@ -1,4 +1,4 @@
-import React, { useState } from "react";               // 🆕 added useState
+import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
@@ -15,9 +15,6 @@ const ProductDetails = () => {
   const { role, roleLoading } = useUserRole();
   const queryClient = useQueryClient();
 
-  /* ------------------------------------------------------------------
-     1) FETCH PRODUCT
-  ------------------------------------------------------------------ */
   const {
     data: product,
     isLoading: productLoading,
@@ -29,9 +26,8 @@ const ProductDetails = () => {
     queryFn: async () => (await axiosSecure.get(`/products/${id}`)).data,
   });
 
-  /* ------------------------------------------------------------------
-     2) WATCH‑LIST CHECK (unchanged)
-  ------------------------------------------------------------------ */
+  // WATCH‑LIST CHECK (unchanged)
+
   const {
     data: watchlistData = { isInWatchlist: false },
     isLoading: watchlistLoading,
@@ -48,30 +44,19 @@ const ProductDetails = () => {
     retry: false,
   });
 
-  /* ------------------------------------------------------------------
-     3) 🆕  REVIEWS – fetch existing reviews for this product
-        GET /reviews?productId=<id>
-  ------------------------------------------------------------------ */
-  const {
-    data: reviews = [],
-    isLoading: reviewsLoading,
-  } = useQuery({
+  // REVIEWS – fetch existing reviews for this product
+  //         GET /reviews?productId=<id>
+
+  const { data: reviews = [], isLoading: reviewsLoading } = useQuery({
     queryKey: ["reviews", id],
     enabled: !!id,
     queryFn: async () =>
       (await axiosSecure.get(`/reviews?productId=${id}`)).data, // expects []
   });
 
-  /* ------------------------------------------------------------------
-     4) 🆕  REVIEW form local state
-  ------------------------------------------------------------------ */
-  const [rating, setRating] = useState(0);      // 1‑5 stars
+  const [rating, setRating] = useState(0); // 1‑5 stars
   const [comment, setComment] = useState("");
 
-  /* ------------------------------------------------------------------
-     5) 🆕  REVIEW mutation – POST /reviews
-        body: { productId, rating, comment, userName, userEmail }
-  ------------------------------------------------------------------ */
   const addReviewMutation = useMutation({
     mutationFn: async () => {
       if (rating < 1) throw new Error("Please select a rating");
@@ -93,9 +78,6 @@ const ProductDetails = () => {
     onError: (err) => toast.error(err?.response?.data?.error || err.message),
   });
 
-  /* ------------------------------------------------------------------
-     6) WATCH‑LIST mutation (unchanged)
-  ------------------------------------------------------------------ */
   const addToWatchlistMutation = useMutation({
     mutationFn: async () => {
       const orderInfo = {
@@ -120,9 +102,6 @@ const ProductDetails = () => {
     onError: () => toast.error("Failed to add to watchlist"),
   });
 
-  /* ------------------------------------------------------------------
-     7) derived states
-  ------------------------------------------------------------------ */
   const isDisabled =
     roleLoading ||
     !user ||
@@ -136,9 +115,6 @@ const ProductDetails = () => {
 
   const handleBuyNow = () => navigate(`/buy/${product._id}`);
 
-  /* ------------------------------------------------------------------
-     8) LOADING / ERROR
-  ------------------------------------------------------------------ */
   if (productLoading || watchlistLoading || reviewsLoading) return <Loading />;
   if (isError)
     return (
@@ -146,9 +122,6 @@ const ProductDetails = () => {
     );
   if (!product) return <p className="text-center mt-6">Product not found.</p>;
 
-  /* ------------------------------------------------------------------
-     9) JSX
-  ------------------------------------------------------------------ */
   return (
     <section className="max-w-5xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold text-center">
@@ -288,11 +261,17 @@ const ProductDetails = () => {
               ⭐ Add to Watchlist
             </button>
 
-            <Link to="/dashboard/orders">
-              <button onClick={handleBuyNow} className="btn btn-success">
-                🛒 Buy Product
-              </button>
-            </Link>
+            <button
+              onClick={handleBuyNow}
+              disabled={roleLoading || role !== "user"}
+              className={`btn btn-success ${
+                roleLoading || role !== "user"
+                  ? "btn-disabled cursor-not-allowed"
+                  : ""
+              }`}
+            >
+              🛒 Buy Product
+            </button>
           </div>
         </div>
       </div>

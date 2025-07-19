@@ -12,6 +12,7 @@ const SocialLogin = () => {
   const handleGoogleSignin = () => {
     googleSignin()
       .then(async (result) => {
+        console.log(result.user);
         setUser(result.user);
         navigate(from);
 
