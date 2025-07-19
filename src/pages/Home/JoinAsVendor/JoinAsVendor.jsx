@@ -24,7 +24,7 @@ const JoinAsVendor = () => {
           className="inline-block mt-4"
         >
           <Link
-            to="/vendor-registration"
+           
             className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold shadow hover:bg-green-700 transition"
           >
             Join as a Vendor

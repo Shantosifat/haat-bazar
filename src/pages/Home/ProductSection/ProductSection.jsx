@@ -47,7 +47,7 @@ const ProductSection = () => {
 
   const handleViewDetails = (id) => {
     if (!user) navigate("/login", { replace: true });
-    else navigate(`/product/${id}`);
+    else navigate(`/products/${id}`);
   };
 
   /* ── animation variants ── */
@@ -122,6 +122,7 @@ const ProductSection = () => {
                 </button>
               </div>
             </div>
+            
           </motion.div>
         ))}
       </div>
