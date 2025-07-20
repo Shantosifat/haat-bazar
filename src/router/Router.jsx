@@ -38,7 +38,8 @@ export const router = createBrowserRouter([
       },
       {
         path:'product/:id',
-        Component:ProductDetails
+        // Component:ProductDetails
+        element:<PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
       },
       {
         path:'products',

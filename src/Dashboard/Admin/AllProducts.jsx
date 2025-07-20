@@ -121,7 +121,7 @@ const AllProducts = () => {
               <th>Image</th>
               <th>Item</th>
               <th>Market</th>
-              <th>Vendor</th>
+              <th>Vendor Email</th>
               <th>Date</th>
               <th>Status</th>
               <th className="text-center">Actions</th>
@@ -140,7 +140,7 @@ const AllProducts = () => {
                 </td>
                 <td>{p.itemName}</td>
                 <td>{p.marketName}</td>
-                <td>{p.vendorName}</td>
+                <td>{p.vendorEmail}</td>
                 <td>{new Date(p.date).toLocaleDateString()}</td>
                 <td>
                   <span
@@ -175,7 +175,12 @@ const AllProducts = () => {
                     >
                       ✖
                     </button>
-                   
+                    {/* <Link
+                      to={`/dashboard/updateProduct/${p._id}`}
+                      className="btn btn-xs btn-info"
+                    >
+                      ✎
+                    </Link> */}
                     <button
                       onClick={() => handleDelete(p._id)}
                       className="btn btn-xs btn-outline btn-error"

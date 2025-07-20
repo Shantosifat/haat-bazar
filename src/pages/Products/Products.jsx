@@ -19,7 +19,7 @@ const Products = () => {
   });
 
   const handleViewDetails = (id) => {
-    if (!user) return navigate("/login");
+    // if (!user) return navigate("/login");
     navigate(`/product/${id}`);
   };
 

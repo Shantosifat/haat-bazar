@@ -113,7 +113,37 @@ const ProductDetails = () => {
     if (!isDisabled) addToWatchlistMutation.mutate();
   };
 
-  const handleBuyNow = () => navigate(`/buy/${product._id}`);
+  const handleBuyNow = async () => {
+  if (!user || role !== "user") return;
+
+  try {
+    // If not already in watchlist, add it first
+    if (!watchlistData?.isInWatchlist) {
+      const orderInfo = {
+        productId: product._id,
+        itemName: product.itemName,
+        marketName: product.marketName,
+        pricePerUnit: product.pricePerUnit,
+        date: product.date,
+        image: product.image,
+        userEmail: user.email,
+        payment_status: "unpaid",
+        delivery_status: "not-collected",
+        orderDate: new Date().toISOString(),
+      };
+
+      await axiosSecure.post("/watchlist", orderInfo);
+      queryClient.invalidateQueries(["watchlist-check", id, user?.email]);
+      queryClient.invalidateQueries(["my-watchlist"]);
+      toast.success("Product added to watchlist");
+    }
+
+    navigate('/dashboard/orders');
+  } catch (error) {
+    toast.error("Failed to add to watchlist");
+  }
+};
+
 
   if (productLoading || watchlistLoading || reviewsLoading) return <Loading />;
   if (isError)

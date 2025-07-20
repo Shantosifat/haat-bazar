@@ -86,7 +86,7 @@ const MyOrders = () => {
 
                 {/* actions */}
                 <td className="text-center space-x-2">
-          
+              
                   <button
                     className="btn btn-xs btn-info"
                     onClick={() => handleViewDetails(item.productId)}

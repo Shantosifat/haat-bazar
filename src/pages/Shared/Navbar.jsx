@@ -8,6 +8,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logOut } = UseAuth();
+
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -22,50 +23,43 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink className=" font-semibold" to="/">
+        <NavLink className="font-semibold" to="/">
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink className=" font-semibold" to="/products">
+        <NavLink className="font-semibold" to="/products">
           All Products
         </NavLink>
       </li>
-      {/* <li>
-            <NavLink className="text-gray-800" to="/dashboard">
-              Dashboard
-            </NavLink>
-          </li> */}
       {user && (
-        <>
-          <li>
-            <NavLink className=" font-semibold" to="/dashboard">
-              Dashboard
-            </NavLink>
-          </li>
-        </>
+        <li>
+          <NavLink className="font-semibold" to="/dashboard">
+            Dashboard
+          </NavLink>
+        </li>
       )}
     </>
   );
 
   return (
-    <nav className="bg-slate-700  shadow-md px-6 py-3">
-      <div className="flex items-center justify-between py-2 ">
-        {/* Left: Logo + Website Name */}
+    <nav className="bg-slate-700 shadow-md px-6 py-3">
+      <div className="flex items-center justify-between py-2">
+        {/* Left: Logo */}
         <div className="mr-60">
-          <Logo></Logo>
+          <Logo />
         </div>
 
-        {/* Center: All Products */}
+        {/* Center: Desktop Links */}
         <div className="w-1/3 text-center hidden md:block">
-          <ul className="menu menu-horizontal pl-5">{links}</ul>
+          <ul className="menu menu-horizontal pl-5 text-white">{links}</ul>
         </div>
 
-        {/* Right: Hamburger + Auth/User */}
+        {/* Right: Hamburger + User */}
         <div className="w-1/3 flex justify-end items-center space-x-4">
-          {/* Hamburger (mobile only) */}
+          {/* Hamburger */}
           <button
-            className="md:hidden text-gray-700 focus:outline-none"
+            className="md:hidden text-white focus:outline-none"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -93,7 +87,7 @@ const Navbar = () => {
             </svg>
           </button>
 
-          {/* Auth/User (desktop) */}
+          {/* Desktop User/Auth */}
           <div className="hidden md:flex items-center space-x-4">
             {!user ? (
               <>
@@ -112,7 +106,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <div className=" md:flex flex-col text-right">
+                <div className="md:flex flex-col text-right">
                   <img
                     src={user.photoURL}
                     alt="User Profile"
@@ -134,45 +128,64 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden mt-4 flex flex-col space-y-3">
+        <div className="md:hidden mt-4 flex flex-col space-y-3 text-white">
           <NavLink
-            to="/allProducts"
-            className="block ml-10 px-3 py-2 rounded text-gray-700 font-semibold"
+            to="/"
+            className="block ml-10 px-3 py-2 rounded hover:bg-slate-600 font-semibold"
+            onClick={() => setMenuOpen(false)}
           >
-            All Products
+            🏠 Home
+          </NavLink>
+          <NavLink
+            to="/products"
+            className="block ml-10 px-3 py-2 rounded hover:bg-slate-600 font-semibold"
+            onClick={() => setMenuOpen(false)}
+          >
+            🛒 All Products
           </NavLink>
 
-          {!user ? (
+          {user ? (
             <>
-              <a
-                href="/login"
-                className="px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-center"
+              <NavLink
+                to="/dashboard"
+                className="block ml-10 px-3 py-2 rounded hover:bg-slate-600 font-semibold"
+                onClick={() => setMenuOpen(false)}
               >
-                🔐 Login
-              </a>
-              <a
-                href="/signup"
-                className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
-              >
-                🧾 Sign-up
-              </a>
+                📊 Dashboard
+              </NavLink>
+              <div className="flex items-center ml-10 space-x-3">
+                <img
+                  src={user.photoURL}
+                  alt="User"
+                  className="w-9 h-9 rounded-full border border-gray-300"
+                />
+                <button
+                  onClick={() => {
+                    handleLogOut();
+                    setMenuOpen(false);
+                  }}
+                  className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50"
+                >
+                  🚪 Logout
+                </button>
+              </div>
             </>
           ) : (
             <>
-              <div className=" md:flex flex-col text-right">
-                <img
-                  src={user.photoURL}
-                  alt="User Profile"
-                  className="w-9 h-9 rounded-full border border-gray-300"
-                  title={`${user.name} (${user.email})`}
-                />
-              </div>
-              <button
-                onClick={handleLogOut}
-                className="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 text-center"
+              <Link
+                to="/login"
+                className="block ml-10 px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-center"
+                onClick={() => setMenuOpen(false)}
               >
-                🚪 Logout
-              </button>
+                🔐 Login
+              </Link>
+              <Link
+                to="/signup"
+                className="block ml-10 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
+                onClick={() => setMenuOpen(false)}
+              >
+                🧾 Sign-up
+              </Link>
             </>
           )}
         </div>
