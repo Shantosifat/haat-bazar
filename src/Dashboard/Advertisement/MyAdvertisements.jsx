@@ -90,8 +90,8 @@ const MyAdvertisements = () => {
 
   return (
     <div className="px-10 py-5">
-      <h2 className="text-2xl font-bold mb-4 text-green-700">
-        📋 My Advertisements
+      <h2 className="text-3xl text-center font-bold mb-5 text-green-700">
+         My Advertisements
       </h2>
 
       {isLoading ? (
