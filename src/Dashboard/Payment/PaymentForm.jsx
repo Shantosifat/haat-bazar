@@ -1,8 +1,8 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import UseAxiosSecure from "../../hooks/UseAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Loading from "../../pages/Shared/Loading";
 import UseAuth from "../../hooks/UseAuth";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,6 +18,10 @@ const PaymentForm = () => {
   const axiosSecure = UseAxiosSecure();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const queryClient = useQueryClient();
+
+  const location = useLocation();
+  const forceRefresh = location.state?.forceRefresh;
 
   const { isPending, data: productData = {} } = useQuery({
     queryKey: ["products", productId],
@@ -94,6 +98,14 @@ const PaymentForm = () => {
           const transactionId = result.paymentIntent.id;
           const paymentRes = await axiosSecure.post("/payments", paymentData);
           if (paymentRes.data.insertedId) {
+            const updatedOrder = paymentRes.data.updatedOrder;
+            // ✅ Update cached data
+            queryClient.setQueryData(["my-orders", user.email], (oldData) => {
+              if (!oldData) return [];
+              return oldData.map((order) =>
+                order._id === updatedOrder._id ? updatedOrder : order
+              );
+            });
             await Swal.fire({
               icon: "success",
               title: "Payment Successful",
@@ -104,7 +116,7 @@ const PaymentForm = () => {
               confirmButtonText: "Go to My orders",
             });
             // redirect to my parcels
-            navigate("/dashboard/orders");
+            navigate("/dashboard/orders", { state: { forceRefresh: true } });
           }
         }
       }
